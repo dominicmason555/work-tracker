@@ -8,6 +8,4 @@
 
 The markdown files could be stored as filesystem paths, if on the filesystem then the schema could also be put in the YAML front matter
 
-
-
 ## Tree View

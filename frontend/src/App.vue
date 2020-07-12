@@ -1,9 +1,5 @@
 <template>
     <div id="app" style="grid-auto-flow: row dense;">
-        <div id="button-pane">
-            <button>Refresh</button>
-            <button>Add</button>
-        </div>
         <div id="task-pane">
             <TaskList />
         </div>
@@ -48,14 +44,6 @@
         height: 100%;
         min-height: 100%;
         box-sizing: border-box;
-    }
-
-    #button-pane {
-        background: #1D2935;
-        padding: 0;
-        grid-row: 1;
-        grid-column: auto / span 1;
-        overflow: auto;
     }
 
     #task-pane {

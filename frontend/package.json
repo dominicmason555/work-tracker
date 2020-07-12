@@ -13,6 +13,7 @@
     "editor.md": "^1.5.0",
     "hypermd": "^0.3.11",
     "muya": "^0.1.2",
+    "regenerator-runtime": "^0.13.5",
     "vue": "^2.6.11",
     "zepto": "^1.2.0"
   },
