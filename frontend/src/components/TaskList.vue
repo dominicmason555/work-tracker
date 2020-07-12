@@ -1,17 +1,14 @@
 <template>
     <div id="taskList">
-        <button v-on:click="fetchTasks()">Refresh Tasks</button>
-        <ul v-for="task in shownTasks" :key="task.id">
-            <TaskItem
-                    :name="task.name"
-                    :added="task.added"
-                    :started="task.started"
-                    :ended="task.ended"
-                    :id="task.id"
-                    :parent_id="task.parent_id"
-                    :status="task.status"
-            ></TaskItem>
-        </ul>
+        <div id="top">
+            <button>New Task</button>
+            <hr>
+        </div>
+        <div id="tasks">
+            <ul v-for="task in taskTree" :key="task.id">
+                <TaskItem :details="task"/>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -27,7 +24,7 @@
             return {
                 tasks: [],
                 shownTasks: [],
-                taskMap: new Map(),
+                taskTree: [],
             };
         },
         mounted() {
@@ -38,7 +35,7 @@
                 const response = await fetch("http://localhost:8000/tasks");
                 this.tasks = await response.json();
                 if (update) {
-                    this.taskMap = this.makeTree();
+                    this.taskTree = Array.from(this.makeTree().values());
                     this.showAll();
                 }
             },
@@ -94,8 +91,6 @@
                     }
                 }
 
-                console.log(levels);
-                console.log(taskMap);
                 return taskMap;
             },
         },
@@ -105,5 +100,20 @@
 <style scoped>
     #taskList {
         padding: 0;
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    #top {
+        text-align: center;
+    }
+
+    #top button {
+        font-weight: bold;
+        padding-left: 30px;
+        padding-right: 30px;
     }
 </style>

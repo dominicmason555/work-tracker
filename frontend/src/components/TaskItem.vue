@@ -1,11 +1,17 @@
 <template>
     <div id="taskItem">
-        <h2>{{ name }}</h2>
-        Added: {{ addedStr }}
-        <br>
-        {{ startedStr }}
-        <br>
-        {{ endedStr }}
+        <div id="top">
+            <div id="name" @click="select">
+                {{ open ? "&darr;" : "&rarr;" }}
+                {{ details.name }}
+                <button> &gt;</button>
+            </div>
+            <div id="details" v-show="open">Hello there</div>
+        </div>
+
+        <ul v-show="childrenOpen" v-for="task in details.children" :key="task.id">
+            <TaskItem :details="task"/>
+        </ul>
     </div>
 </template>
 
@@ -15,66 +21,43 @@
     export default {
         name: "TaskItem",
         props: {
-            name: String,
-            status: Number,
-            parent_id: Number,
-            id: Number,
-            added: String,
-            started: String,
-            ended: String,
+            details: Object,
         },
         data() {
             return {
-                startedDate: null,
-                startedStr: "Not Started",
-                addedDate: null,
-                addedStr: "",
-                endedDate: null,
-                endedStr: "Ongoing",
+                open: false,
+                childrenOpen: true,
             };
         },
-        created() {
-            if (this.started) {
-                this.startedDate = new Date(this.started);
-                this.startedStr = "Started: " + this.startedDate.toLocaleString("en-GB", dateFormat);
-            }
-            if (this.added) {
-                this.addedDate = new Date(this.added);
-                this.addedStr = this.addedDate.toLocaleString("en-GB", dateFormat);
-            }
-            if (this.status === 1) {
-                this.endedStr = "Finished";
-                if (this.ended) {
-                    this.endedDate = new Date(this.ended);
-                    this.endedStr += ": " + this.endedDate.toLocaleString("en-GB", dateFormat);
-                }
-            }
-            if (this.status === 2) {
-                this.endedStr = "Cancelled";
-                if (this.ended) {
-                    this.endedDate = new Date(this.ended);
-                    this.endedStr += ": " + this.endedDate.toLocaleString("en-GB", dateFormat);
-                }
-            }
+        methods: {
+            select() {
+                this.open = !this.open;
+            },
         },
     };
 </script>
 
 <style scoped>
-    #taskItem {
+    #top  {
         background: #304457;
-        padding: 1vh;
-        margin-right: 3vh;
-        margin-top: 1vh;
+        margin: 1vh;
+        padding: 7px;
         font-size: 11pt;
-        text-align: right;
+        font-weight: bold;
     }
 
-    h2 {
-        text-align: left;
-        margin: 0;
-        font-size: 15pt;
-        font-weight: 600;
+    #top button {
+        float: right;
+        font-weight: bold;
+    }
+
+    #details {
+        font-weight: normal;
+        font-size: 10pt;
+    }
+
+    ul {
+        padding-left: 20px;
     }
 
 </style>
