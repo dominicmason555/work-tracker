@@ -7,6 +7,7 @@
         <div id="tasks">
             <ul v-for="task in taskTree" :key="task.id">
                 <TaskItem :details="task"/>
+                <hr>
             </ul>
         </div>
     </div>
@@ -115,5 +116,15 @@
         font-weight: bold;
         padding-left: 30px;
         padding-right: 30px;
+        text-align: center;
+        background: #304457;
+        border: 0;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px solid;
     }
 </style>

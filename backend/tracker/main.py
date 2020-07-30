@@ -86,7 +86,7 @@ async def read_task_notes(task_id: int, db: Session = Depends(get_db)):
         logging.info(f"Task {task_id}'s notes not in filesystem")
         raise HTTPException(status_code=404, detail="Task notes not in filesystem")
     else:
-        return FileResponse(db_notes[0])
+        return FileResponse(db_notes[0], filename=db_notes[0])
 
 
 @app.put("/tasks/{task_id}/notes/")
@@ -105,7 +105,7 @@ async def write_notes(task_id: int, file: UploadFile = File(...), db: Session = 
             if type(contents) != bytes:
                 logging.info("Task notes not in correct format")
                 raise HTTPException(status_code=422, detail="Task notes not in correct format")
-            await notes.write((await file.read()).decode("utf-8"))
+            await notes.write(contents.decode("utf-8"))
         logging.info(f"File written in {time.time() - start:.3} seconds")
         return {"filename": file.filename}
 
