@@ -33,7 +33,7 @@
         },
         methods: {
             async fetchTasks(update = true) {
-                const response = await fetch("http://localhost:8000/tasks");
+                const response = await fetch("http://localhost:8000/tasks/");
                 this.tasks = await response.json();
                 if (update) {
                     this.taskTree = Array.from(this.makeTree().values());
@@ -56,7 +56,7 @@
                     taskMap.set(item.id, item);
                 });
 
-                // Assemble level 0: roots and orphans, also mar k orphans
+                // Assemble level 0: roots and orphans, also mark orphans
                 levels.push(new Map());
                 for (const [id, item] of taskMap) {
                     if (!taskMap.has(item.parent_id)) {

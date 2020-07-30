@@ -1,5 +1,9 @@
 <template>
     <div id="editor-pane">
+        <div id="top">
+            <button>New Task</button>
+            <hr>
+        </div>
         <label for="myTextarea"></label>
         <textarea id="myTextarea">
         </textarea>
@@ -26,12 +30,19 @@
         },
         mounted() {
             this.setup();
+            this.$root.$on("note-open", this.openNote);
         },
         methods: {
             setup() {
                 this.editor = HyperMD.fromTextArea(document.getElementById("myTextarea"));
-                this.editor.setValue("# This is nice text \n $\\sum^N_n \\cos(\\pi \\cdot n)$ ");
+                this.editor.setValue("## Open a tasks notes from the left using the arrow button \n");
                 this.editor.setSize("100%", "100%");
+            },
+            async openNote(noteID: number) {
+                const response = await fetch(`http://localhost:8000/tasks/${noteID}/notes/`);
+                if (response.status === 200) {
+                    this.editor.setValue(await response.text());
+                }
             },
         },
     });

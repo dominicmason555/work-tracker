@@ -5,6 +5,7 @@
                 <div id="name" ref="name" @click="select" @mouseover="hover(true)" @mouseleave="hover(false)">
                     {{ open ? "&darr;" : "&rarr;" }}
                     {{ details.name }}
+                    {{ details.status === 1 ? "&check;" : "" }}
                     <button v-on:click="onArrButton"> &gt;</button>
                 </div>
             </div>
@@ -67,7 +68,15 @@
                 }
             },
         },
+        mounted() {
+            this.$root.$on("note-open", (id) => {
+                if (id !== this.details.id) {
+                    this.open = false;
+                }
+            });
+        },
         methods: {
+
             select() {
                 this.open = !this.open;
             },
@@ -75,7 +84,7 @@
                 setTimeout(() => {
                     this.open = true;
                 }, 1);
-                this.$root.$emit()
+                this.$root.$emit("note-open", this.details.id);
             },
             hover(isHovered) {
                 this.hovered = isHovered;

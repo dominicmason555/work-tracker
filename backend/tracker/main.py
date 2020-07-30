@@ -86,7 +86,10 @@ async def read_task_notes(task_id: int, db: Session = Depends(get_db)):
         logging.info(f"Task {task_id}'s notes not in filesystem")
         raise HTTPException(status_code=404, detail="Task notes not in filesystem")
     else:
-        return FileResponse(db_notes[0], filename=db_notes[0])
+        try:
+            return FileResponse(db_notes[0], filename=db_notes[0])
+        except ConnectionAbortedError:
+            logging.info("Client disconnected during notes reading")
 
 
 @app.put("/tasks/{task_id}/notes/")
