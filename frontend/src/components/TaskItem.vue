@@ -20,11 +20,29 @@
                         <td> {{started}}</td>
                     </tr>
                     <tr>
-                        <th> Ended:</th>
+                        <th> {{details.status === 2 ? "Cancelled:" : "Ended:"}}</th>
                         <td> {{ended}}</td>
                     </tr>
+
                 </table>
-                <button>Edit</button>
+                <div id="actions">
+                    <table>
+                        <tr>
+                            <td>
+                                <button :disabled="details.started != null">Start</button>
+                            </td>
+                            <td>
+                                <button :disabled="details.ended != null">Cancel</button>
+                            </td>
+                            <td>
+                                <button :disabled="details.ended != null">Finish</button>
+                            </td>
+                            <td>
+                                <button v-on:click="onEditButton">Edit</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -94,6 +112,9 @@
                     this.$refs.name.style["text-decoration"] = "none";
                 }
             },
+            onEditButton() {
+                this.$root.$emit("item-edit", this.details.id);
+            },
         },
     };
 </script>
@@ -134,6 +155,13 @@
     #details table {
         width: 100%;
         border-spacing: 5px;
+    }
+
+    #actions table {
+        border-spacing: 5px;
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     #details td {
